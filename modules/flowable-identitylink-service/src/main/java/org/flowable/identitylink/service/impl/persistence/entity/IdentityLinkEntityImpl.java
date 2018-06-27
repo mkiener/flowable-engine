@@ -18,7 +18,6 @@ import java.util.Map;
 
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.scope.ScopeTypes;
-import org.flowable.common.engine.impl.persistence.entity.AbstractEntityNoRevision;
 
 /**
  * @author Joram Barrez
