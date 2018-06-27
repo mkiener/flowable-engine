@@ -48,7 +48,7 @@ public interface CaseDefinition {
     String getDiagramResourceName();
 
     /**
-     * Does this case definition have a start form key}.
+     * Does this case definition have a start form key.
      */
     boolean hasStartFormKey();
 

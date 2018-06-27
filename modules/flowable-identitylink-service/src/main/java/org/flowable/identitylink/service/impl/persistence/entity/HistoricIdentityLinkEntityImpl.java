@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.flowable.common.engine.api.FlowableException;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 
 /**
  * @author Frederik Heremans
@@ -149,6 +150,15 @@ public class HistoricIdentityLinkEntityImpl extends AbstractIdentityLinkServiceN
     
     @Override
     public String getScopeId() {
+        // scope based values are not persisted in the historic identity link tables
+        if (scopeId == null) {
+            if (taskId != null) {
+                return taskId;
+            }
+            if (processInstanceId != null) {
+                return processInstanceId;
+            }
+        }
         return this.scopeId;
     }
     
@@ -159,6 +169,15 @@ public class HistoricIdentityLinkEntityImpl extends AbstractIdentityLinkServiceN
 
     @Override
     public String getScopeType() {
+        // scope based values are not persisted in the historic identity link tables
+        if (scopeType == null) {
+            if (taskId != null) {
+                return ScopeTypes.TASK;
+            }
+            if (processInstanceId != null) {
+                return ScopeTypes.BPMN;
+            }
+        }
         return this.scopeType;
     }
     

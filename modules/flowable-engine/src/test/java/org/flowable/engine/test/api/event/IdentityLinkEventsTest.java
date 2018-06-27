@@ -15,6 +15,7 @@ package org.flowable.engine.test.api.event;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
 import org.flowable.common.engine.api.delegate.event.FlowableEntityEvent;
 import org.flowable.common.engine.api.delegate.event.FlowableEvent;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.engine.impl.test.PluggableFlowableTestCase;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -96,7 +97,9 @@ public class IdentityLinkEventsTest extends PluggableFlowableTestCase {
         assertEquals(FlowableEngineEventType.ENTITY_CREATED, event.getType());
         assertTrue(event.getEntity() instanceof IdentityLink);
         IdentityLink link = (IdentityLink) event.getEntity();
-        assertEquals(processInstance.getId(), link.getProcessInstanceId());
+        assertEquals(processInstance.getId(), link.getScopeId());
+        assertEquals(ScopeTypes.BPMN, link.getScopeType());
+        assertEquals(processInstance.getProcessDefinitionId(), link.getScopeDefinitionId());
         assertEquals("kermit", link.getUserId());
         assertEquals("test", link.getType());
 
@@ -115,6 +118,9 @@ public class IdentityLinkEventsTest extends PluggableFlowableTestCase {
         link = (IdentityLink) event.getEntity();
         assertEquals("kermit", link.getUserId());
         assertEquals("test", link.getType());
+        assertEquals(processInstance.getId(), link.getScopeId());
+        assertEquals(ScopeTypes.BPMN, link.getScopeType());
+        assertEquals(processInstance.getProcessDefinitionId(), link.getScopeDefinitionId());
         
         waitForHistoryJobExecutorToProcessAllJobs(7000, 100);
     }
@@ -145,6 +151,8 @@ public class IdentityLinkEventsTest extends PluggableFlowableTestCase {
         assertEquals("kermit", link.getUserId());
         assertEquals("candidate", link.getType());
         assertEquals(task.getId(), link.getTaskId());
+        assertEquals(task.getId(), link.getScopeId());
+        assertEquals(ScopeTypes.TASK, link.getScopeType());
 
         event = (FlowableEntityEvent) listener.getEventsReceived().get(1);
         assertEquals(FlowableEngineEventType.ENTITY_INITIALIZED, event.getType());
@@ -157,7 +165,7 @@ public class IdentityLinkEventsTest extends PluggableFlowableTestCase {
         link = (IdentityLink) event.getEntity();
         assertEquals("sales", link.getGroupId());
         assertEquals("candidate", link.getType());
-        assertEquals(task.getId(), link.getTaskId());
+        assertEquals(task.getId(), link.getScopeId());
         
         event = (FlowableEntityEvent) listener.getEventsReceived().get(5);
         assertEquals(FlowableEngineEventType.ENTITY_INITIALIZED, event.getType());

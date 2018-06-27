@@ -18,11 +18,12 @@ import java.util.List;
 import org.flowable.cmmn.engine.impl.util.CommandContextUtil;
 import org.flowable.common.engine.api.FlowableIllegalArgumentException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.interceptor.Command;
 import org.flowable.common.engine.impl.interceptor.CommandContext;
+import org.flowable.identitylink.api.IdentityLinkType;
 import org.flowable.identitylink.api.history.HistoricIdentityLink;
 import org.flowable.identitylink.service.HistoricIdentityLinkService;
-import org.flowable.identitylink.api.IdentityLinkType;
 import org.flowable.identitylink.service.impl.persistence.entity.HistoricIdentityLinkEntity;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.service.impl.persistence.entity.HistoricTaskInstanceEntity;
@@ -71,6 +72,8 @@ public class GetHistoricIdentityLinksForTaskCmd implements Command<List<Historic
             identityLink.setUserId(task.getAssignee());
             identityLink.setTaskId(task.getId());
             identityLink.setType(IdentityLinkType.ASSIGNEE);
+            identityLink.setScopeType(ScopeTypes.TASK);
+            identityLink.setScopeId(task.getId());
             identityLinks.add(identityLink);
         }
 
@@ -79,6 +82,8 @@ public class GetHistoricIdentityLinksForTaskCmd implements Command<List<Historic
             identityLink.setTaskId(task.getId());
             identityLink.setUserId(task.getOwner());
             identityLink.setType(IdentityLinkType.OWNER);
+            identityLink.setScopeType(ScopeTypes.TASK);
+            identityLink.setScopeId(task.getId());
             identityLinks.add(identityLink);
         }
 

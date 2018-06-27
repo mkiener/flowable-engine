@@ -320,7 +320,7 @@ public class TaskEntityImpl extends AbstractTaskServiceVariableScopeEntity imple
     @Override
     public void addUserIdentityLink(String userId, String identityLinkType) {
         IdentityLinkEntityManager identityLinkEntityManager = CommandContextUtil.getIdentityLinkEntityManager();
-        IdentityLinkEntity identityLink = identityLinkEntityManager.addTaskIdentityLink(this.id, userId, null, identityLinkType);
+        IdentityLinkEntity identityLink = identityLinkEntityManager.addScopeIdentityLink(null, this.id, ScopeTypes.TASK, userId, null, identityLinkType);
         InternalTaskAssignmentManager taskAssignmentManager = getTaskAssignmentManager();
         if (taskAssignmentManager != null) {
             taskAssignmentManager.addUserIdentityLink(this, identityLink);
@@ -330,7 +330,7 @@ public class TaskEntityImpl extends AbstractTaskServiceVariableScopeEntity imple
     @Override
     public void addGroupIdentityLink(String groupId, String identityLinkType) {
         IdentityLinkEntityManager identityLinkEntityManager = CommandContextUtil.getIdentityLinkEntityManager();
-        IdentityLinkEntity identityLink = identityLinkEntityManager.addTaskIdentityLink(this.id, null, groupId, identityLinkType);
+        IdentityLinkEntity identityLink = identityLinkEntityManager.addScopeIdentityLink(null, this.id, ScopeTypes.TASK, null, groupId, identityLinkType);
         InternalTaskAssignmentManager taskAssignmentManager = getTaskAssignmentManager();
         if (taskAssignmentManager != null) {
             taskAssignmentManager.addGroupIdentityLink(this, identityLink);

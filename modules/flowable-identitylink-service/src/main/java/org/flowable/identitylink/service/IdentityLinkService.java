@@ -18,8 +18,9 @@ import java.util.List;
 import org.flowable.identitylink.service.impl.persistence.entity.IdentityLinkEntity;
 
 /**
- * Service which provides access to variables.
- * 
+ * Service which provides access to identity links.
+ *
+ * @see org.flowable.identitylink.api.IdentityLinkInfo for more detailed information about identity links
  * @author Tijs Rademakers
  */
 public interface IdentityLinkService {
@@ -44,7 +45,7 @@ public interface IdentityLinkService {
     
     List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups);
     
-    IdentityLinkEntity createProcessInstanceIdentityLink(String processInstanceId, String userId, String groupId, String type);
+    IdentityLinkEntity createProcessInstanceIdentityLink(String processInstanceId, String processDefinitionId, String userId, String groupId, String type);
     
     IdentityLinkEntity createScopeIdentityLink(String scopeDefinitionId, String scopeId, String scopeType, String userId, String groupId, String type);
     

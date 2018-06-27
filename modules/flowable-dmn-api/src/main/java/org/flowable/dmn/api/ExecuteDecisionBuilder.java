@@ -28,7 +28,7 @@ import java.util.Map;
 public interface ExecuteDecisionBuilder {
 
     /**
-     * Set the key of the decision
+     * Set the key of the decision to be executed.
      **/
     ExecuteDecisionBuilder decisionKey(String decisionKey);
     

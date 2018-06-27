@@ -15,6 +15,7 @@ package org.flowable.task.service.impl;
 import java.util.List;
 import java.util.Objects;
 
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.service.CommonServiceImpl;
 import org.flowable.identitylink.service.HistoricIdentityLinkService;
 import org.flowable.identitylink.api.IdentityLinkType;
@@ -131,6 +132,8 @@ public class HistoricTaskServiceImpl extends CommonServiceImpl<TaskServiceConfig
     protected void createHistoricIdentityLink(String taskId, String type, String userId) {
         HistoricIdentityLinkService historicIdentityLinkService =  CommandContextUtil.getHistoricIdentityLinkService();
         HistoricIdentityLinkEntity historicIdentityLinkEntity = historicIdentityLinkService.createHistoricIdentityLink();
+        historicIdentityLinkEntity.setScopeType(ScopeTypes.TASK);
+        historicIdentityLinkEntity.setScopeId(taskId);
         historicIdentityLinkEntity.setTaskId(taskId);
         historicIdentityLinkEntity.setType(type);
         historicIdentityLinkEntity.setUserId(userId);

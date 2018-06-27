@@ -1324,9 +1324,13 @@ public class TaskServiceTest extends PluggableFlowableTestCase {
         taskService.addCandidateUser(taskId, "kermit");
         List<IdentityLink> identityLinks = taskService.getIdentityLinksForTask(taskId);
         assertEquals(1, identityLinks.size());
-        assertEquals("kermit", identityLinks.get(0).getUserId());
-        assertNull(identityLinks.get(0).getGroupId());
-        assertEquals(IdentityLinkType.CANDIDATE, identityLinks.get(0).getType());
+        IdentityLink identityLink = identityLinks.get(0);
+        assertEquals("kermit", identityLink.getUserId());
+        assertNull(identityLink.getGroupId());
+        assertEquals(IdentityLinkType.CANDIDATE, identityLink.getType());
+        assertEquals(task.getId(), identityLink.getScopeId());
+        assertEquals(ScopeTypes.TASK, identityLink.getScopeType());
+        assertNull(identityLink.getScopeDefinitionId());
 
         // cleanup
         taskService.deleteTask(taskId, true);
@@ -1344,9 +1348,13 @@ public class TaskServiceTest extends PluggableFlowableTestCase {
         taskService.addCandidateGroup(taskId, "muppets");
         List<IdentityLink> identityLinks = taskService.getIdentityLinksForTask(taskId);
         assertEquals(1, identityLinks.size());
-        assertEquals("muppets", identityLinks.get(0).getGroupId());
-        assertNull(identityLinks.get(0).getUserId());
-        assertEquals(IdentityLinkType.CANDIDATE, identityLinks.get(0).getType());
+        IdentityLink identityLink = identityLinks.get(0);
+        assertEquals("muppets", identityLink.getGroupId());
+        assertNull(identityLink.getUserId());
+        assertEquals(IdentityLinkType.CANDIDATE, identityLink.getType());
+        assertEquals(task.getId(), identityLink.getScopeId());
+        assertEquals(ScopeTypes.TASK, identityLink.getScopeType());
+        assertNull(identityLink.getScopeDefinitionId());
 
         // cleanup
         taskService.deleteTask(taskId, true);
@@ -1364,9 +1372,13 @@ public class TaskServiceTest extends PluggableFlowableTestCase {
         taskService.claim(taskId, "kermit");
         List<IdentityLink> identityLinks = taskService.getIdentityLinksForTask(taskId);
         assertEquals(1, identityLinks.size());
-        assertEquals("kermit", identityLinks.get(0).getUserId());
-        assertNull(identityLinks.get(0).getGroupId());
-        assertEquals(IdentityLinkType.ASSIGNEE, identityLinks.get(0).getType());
+        IdentityLink identityLink = identityLinks.get(0);
+        assertEquals("kermit", identityLink.getUserId());
+        assertNull(identityLink.getGroupId());
+        assertEquals(IdentityLinkType.ASSIGNEE, identityLink.getType());
+        assertEquals(task.getId(), identityLink.getScopeId());
+        assertEquals(ScopeTypes.TASK, identityLink.getScopeType());
+        assertNull(identityLink.getScopeDefinitionId());
 
         // cleanup
         taskService.deleteTask(taskId, true);
@@ -1382,9 +1394,13 @@ public class TaskServiceTest extends PluggableFlowableTestCase {
         taskService.claim(taskId, "nonExistingAssignee");
         List<IdentityLink> identityLinks = taskService.getIdentityLinksForTask(taskId);
         assertEquals(1, identityLinks.size());
-        assertEquals("nonExistingAssignee", identityLinks.get(0).getUserId());
-        assertNull(identityLinks.get(0).getGroupId());
-        assertEquals(IdentityLinkType.ASSIGNEE, identityLinks.get(0).getType());
+        IdentityLink identityLink = identityLinks.get(0);
+        assertEquals("nonExistingAssignee", identityLink.getUserId());
+        assertNull(identityLink.getGroupId());
+        assertEquals(IdentityLinkType.ASSIGNEE, identityLink.getType());
+        assertEquals(task.getId(), identityLink.getScopeId());
+        assertEquals(ScopeTypes.TASK, identityLink.getScopeType());
+        assertNull(identityLink.getScopeDefinitionId());
 
         // cleanup
         taskService.deleteTask(taskId, true);
@@ -1409,11 +1425,17 @@ public class TaskServiceTest extends PluggableFlowableTestCase {
         assertEquals("fozzie", assignee.getUserId());
         assertNull(assignee.getGroupId());
         assertEquals(IdentityLinkType.ASSIGNEE, assignee.getType());
+        assertEquals(task.getId(), assignee.getScopeId());
+        assertEquals(ScopeTypes.TASK, assignee.getScopeType());
+        assertNull(assignee.getScopeDefinitionId());
 
         IdentityLink owner = identityLinks.get(1);
         assertEquals("kermit", owner.getUserId());
         assertNull(owner.getGroupId());
         assertEquals(IdentityLinkType.OWNER, owner.getType());
+        assertEquals(task.getId(), owner.getScopeId());
+        assertEquals(ScopeTypes.TASK, owner.getScopeType());
+        assertNull(owner.getScopeDefinitionId());
 
         // cleanup
         taskService.deleteTask(taskId, true);
@@ -1436,11 +1458,17 @@ public class TaskServiceTest extends PluggableFlowableTestCase {
         assertEquals("nonExistingAssignee", assignee.getUserId());
         assertNull(assignee.getGroupId());
         assertEquals(IdentityLinkType.ASSIGNEE, assignee.getType());
+        assertEquals(task.getId(), assignee.getScopeId());
+        assertEquals(ScopeTypes.TASK, assignee.getScopeType());
+        assertNull(assignee.getScopeDefinitionId());
 
         IdentityLink owner = identityLinks.get(1);
         assertEquals("nonExistingOwner", owner.getUserId());
         assertNull(owner.getGroupId());
         assertEquals(IdentityLinkType.OWNER, owner.getType());
+        assertEquals(task.getId(), owner.getScopeId());
+        assertEquals(ScopeTypes.TASK, owner.getScopeType());
+        assertNull(owner.getScopeDefinitionId());
 
         // cleanup
         taskService.deleteTask(taskId, true);

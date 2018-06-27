@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.history.HistoryLevel;
 import org.flowable.engine.impl.test.HistoryTestHelper;
 import org.flowable.engine.impl.test.PluggableFlowableTestCase;
@@ -569,6 +570,9 @@ public class HistoricTaskAndVariablesQueryTest extends PluggableFlowableTestCase
             assertNull(identityLink.getGroupId());
             assertEquals("gonzo", identityLink.getUserId());
             assertEquals(task.getId(), identityLink.getTaskId());
+            assertEquals(ScopeTypes.TASK, identityLink.getScopeType());
+            assertNull(identityLink.getScopeDefinitionId());
+            assertEquals(task.getId(), identityLink.getScopeId());
 
             tasks = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().includeTaskLocalVariables().includeIdentityLinks().orderByTaskPriority().asc().listPage(1, 2);
             assertEquals(2, tasks.size());
@@ -584,6 +588,9 @@ public class HistoricTaskAndVariablesQueryTest extends PluggableFlowableTestCase
             assertNull(identityLink.getGroupId());
             assertEquals("gonzo", identityLink.getUserId());
             assertEquals(task.getId(), identityLink.getTaskId());
+            assertEquals(task.getId(), identityLink.getScopeId());
+            assertEquals(ScopeTypes.TASK, identityLink.getScopeType());
+            assertNull(identityLink.getScopeDefinitionId());
 
             tasks = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().includeTaskLocalVariables().includeIdentityLinks().orderByTaskPriority().asc().listPage(2, 4);
             assertEquals(1, tasks.size());
@@ -599,6 +606,9 @@ public class HistoricTaskAndVariablesQueryTest extends PluggableFlowableTestCase
             assertNull(identityLink.getGroupId());
             assertEquals("gonzo", identityLink.getUserId());
             assertEquals(task.getId(), identityLink.getTaskId());
+            assertEquals(task.getId(), identityLink.getScopeId());
+            assertEquals(ScopeTypes.TASK, identityLink.getScopeType());
+            assertNull(identityLink.getScopeDefinitionId());
 
             tasks = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().includeTaskLocalVariables().includeIdentityLinks().orderByTaskPriority().asc().listPage(4, 2);
             assertEquals(0, tasks.size());

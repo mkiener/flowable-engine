@@ -15,6 +15,7 @@ package org.flowable.identitylink.service.impl;
 import java.util.Collection;
 import java.util.List;
 
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.service.CommonServiceImpl;
 import org.flowable.identitylink.service.IdentityLinkService;
 import org.flowable.identitylink.service.IdentityLinkServiceConfiguration;
@@ -81,8 +82,8 @@ public class IdentityLinkServiceImpl extends CommonServiceImpl<IdentityLinkServi
     }
     
     @Override
-    public IdentityLinkEntity createProcessInstanceIdentityLink(String processInstanceId, String userId, String groupId, String type) {
-        return getIdentityLinkEntityManager().addProcessInstanceIdentityLink(processInstanceId, userId, groupId, type);
+    public IdentityLinkEntity createProcessInstanceIdentityLink(String processInstanceId, String processDefinitionId, String userId, String groupId, String type) {
+        return getIdentityLinkEntityManager().addScopeIdentityLink(processDefinitionId, processInstanceId, ScopeTypes.BPMN, userId, groupId, type);
     }
     
     @Override
@@ -92,12 +93,12 @@ public class IdentityLinkServiceImpl extends CommonServiceImpl<IdentityLinkServi
     
     @Override
     public IdentityLinkEntity createTaskIdentityLink(String taskId, String userId, String groupId, String type) {
-        return getIdentityLinkEntityManager().addTaskIdentityLink(taskId, userId, groupId, type);
+        return getIdentityLinkEntityManager().addScopeIdentityLink(null, taskId, ScopeTypes.TASK, userId, groupId, type);
     }
     
     @Override
     public IdentityLinkEntity createProcessDefinitionIdentityLink(String processDefinitionId, String userId, String groupId) {
-        return getIdentityLinkEntityManager().addProcessDefinitionIdentityLink(processDefinitionId, userId, groupId);
+        return getIdentityLinkEntityManager().addScopeDefinitionIdentityLink(processDefinitionId, ScopeTypes.BPMN_DEFINITION, userId, groupId);
     }
     
     @Override

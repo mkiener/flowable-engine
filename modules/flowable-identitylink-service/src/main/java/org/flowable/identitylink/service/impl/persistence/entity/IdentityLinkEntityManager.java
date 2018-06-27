@@ -42,12 +42,27 @@ public interface IdentityLinkEntityManager extends EntityManager<IdentityLinkEnt
 
     List<IdentityLinkEntity> findIdentityLinkByScopeDefinitionScopeTypeUserAndGroup(String scopeDefinitionId, String scopeType, String userId, String groupId);
 
-    IdentityLinkEntity addProcessInstanceIdentityLink(String processInstanceId, String userId, String groupId, String type);
+    /**
+     * @deprecated use {@link #addScopeIdentityLink(String, String, String, String, String, String)} instead with
+     * {@link org.flowable.identitylink.api.IdentityLinkScopeType#PROCESS} as the scopeType
+     */
+    @Deprecated
+    IdentityLinkEntity addProcessInstanceIdentityLink(String processInstanceId, String processDefinitionId, String userId, String groupId, String type);
     
     IdentityLinkEntity addScopeIdentityLink(String scopeDefinitionId, String scopeId, String scopeType, String userId, String groupId, String type);
 
+    /**
+     * @deprecated use {@link #addScopeIdentityLink(String, String, String, String, String, String)} instead with
+     * {@link org.flowable.identitylink.api.IdentityLinkScopeType#TASK} as the scopeType
+     */
+    @Deprecated
     IdentityLinkEntity addTaskIdentityLink(String taskId, String userId, String groupId, String type);
 
+    /**
+     * @deprecated use {@link #addScopeDefinitionIdentityLink(String, String, String, String)} instead with
+     * {@link org.flowable.identitylink.api.IdentityLinkScopeType#PROCESS_DEFINITION} as the scopeType
+     */
+    @Deprecated
     IdentityLinkEntity addProcessDefinitionIdentityLink(String processDefinitionId, String userId, String groupId);
     
     IdentityLinkEntity addScopeDefinitionIdentityLink(String scopeDefinitionId, String scopeType, String userId, String groupId);

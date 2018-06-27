@@ -24,7 +24,9 @@ public interface IdentityLink extends IdentityLinkInfo {
 
     /**
      * The process definition id associated with this identity link.
+     * @deprecated use {@link #getScopeDefinitionId()} instead if this is a process instance or process definition related identity link
      */
+    @Deprecated
     String getProcessDefinitionId();
 
 }

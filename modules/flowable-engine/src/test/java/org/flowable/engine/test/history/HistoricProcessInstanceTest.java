@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.flowable.common.engine.api.FlowableIllegalArgumentException;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.history.HistoryLevel;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.impl.test.HistoryTestHelper;
@@ -452,11 +453,14 @@ public class HistoricProcessInstanceTest extends PluggableFlowableTestCase {
             // Check historic links
             List<HistoricIdentityLink> historicLinks = historyService.getHistoricIdentityLinksForProcessInstance(pi.getId());
             assertEquals(1, historicLinks.size());
+            HistoricIdentityLink historicIdentityLink = historicLinks.get(0);
 
-            assertEquals("myType", historicLinks.get(0).getType());
-            assertEquals("kermit", historicLinks.get(0).getUserId());
-            assertNull(historicLinks.get(0).getGroupId());
-            assertEquals(pi.getId(), historicLinks.get(0).getProcessInstanceId());
+            assertEquals("myType", historicIdentityLink.getType());
+            assertEquals("kermit", historicIdentityLink.getUserId());
+            assertNull(historicIdentityLink.getGroupId());
+            assertEquals(pi.getId(), historicIdentityLink.getProcessInstanceId());
+            assertEquals(pi.getId(), historicIdentityLink.getScopeId());
+            assertEquals(ScopeTypes.BPMN, historicIdentityLink.getScopeType());
 
             // When process is ended, link should remain
             taskService.complete(taskService.createTaskQuery().processInstanceId(pi.getId()).singleResult().getId());

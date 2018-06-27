@@ -24,11 +24,12 @@ import java.util.Map;
 
 import org.flowable.common.engine.api.FlowableIllegalArgumentException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.engine.impl.test.PluggableFlowableTestCase;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.test.Deployment;
-import org.flowable.identitylink.api.history.HistoricIdentityLink;
 import org.flowable.identitylink.api.IdentityLinkType;
+import org.flowable.identitylink.api.history.HistoricIdentityLink;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.junit.jupiter.api.Test;
 
@@ -310,10 +311,14 @@ public class HistoricTaskInstanceTest extends PluggableFlowableTestCase {
         // task is still active
         List<HistoricIdentityLink> historicIdentityLinksForTask = historyService.getHistoricIdentityLinksForTask(task.getId());
         assertEquals(1, historicIdentityLinksForTask.size());
-        assertNotNull(historicIdentityLinksForTask.get(0).getCreateTime());
+        HistoricIdentityLink historicIdentityLink = historicIdentityLinksForTask.get(0);
+        assertNotNull(historicIdentityLink.getCreateTime());
 
-        assertEquals("kermit", historicIdentityLinksForTask.get(0).getUserId());
-        assertEquals(IdentityLinkType.OWNER, historicIdentityLinksForTask.get(0).getType());
+        assertEquals("kermit", historicIdentityLink.getUserId());
+        assertEquals(IdentityLinkType.OWNER, historicIdentityLink.getType());
+        assertEquals(task.getId(), historicIdentityLink.getScopeId());
+        assertEquals(ScopeTypes.TASK, historicIdentityLink.getScopeType());
+        assertNull(historicIdentityLink.getScopeDefinitionId());
 
         // change owner
         taskService.setOwner(taskId, "gonzo");
@@ -343,7 +348,11 @@ public class HistoricTaskInstanceTest extends PluggableFlowableTestCase {
         waitForHistoryJobExecutorToProcessAllJobs(7000, 100);
         historicIdentityLinksForTask = historyService.getHistoricIdentityLinksForTask(secondTask.getId());
         assertEquals(1, historicIdentityLinksForTask.size());
-        assertNotNull(historicIdentityLinksForTask.get(0).getCreateTime());
+        historicIdentityLink = historicIdentityLinksForTask.get(0);
+        assertNotNull(historicIdentityLink.getCreateTime());
+        assertEquals(secondTask.getId(), historicIdentityLink.getScopeId());
+        assertEquals(ScopeTypes.TASK, historicIdentityLink.getScopeType());
+        assertNull(historicIdentityLink.getScopeDefinitionId());
     }
 
     @Test
@@ -390,6 +399,9 @@ public class HistoricTaskInstanceTest extends PluggableFlowableTestCase {
                 assertNotNull(link.getCreateTime());
                 gonzoCount++;
             }
+            assertEquals(task.getId(), link.getScopeId());
+            assertEquals(ScopeTypes.TASK, link.getScopeType());
+            assertNull(link.getScopeDefinitionId());
         }
 
         assertEquals(3, nullCount);
@@ -423,6 +435,9 @@ public class HistoricTaskInstanceTest extends PluggableFlowableTestCase {
             } else if ("gonzo".equals(link.getUserId())) {
                 gonzoCount++;
             }
+            assertEquals(task.getId(), link.getScopeId());
+            assertEquals(ScopeTypes.TASK, link.getScopeType());
+            assertNull(link.getScopeDefinitionId());
         }
 
         assertEquals(3, nullCount);
@@ -775,6 +790,9 @@ public class HistoricTaskInstanceTest extends PluggableFlowableTestCase {
                     foundCustom = true;
                 }
             }
+            assertEquals(task.getId(), link.getScopeId());
+            assertEquals(ScopeTypes.TASK, link.getScopeType());
+            assertNull(link.getScopeDefinitionId());
         }
 
         assertTrue(foundAssignee);
