@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.history.HistoryLevel;
 import org.flowable.common.engine.impl.interceptor.Command;
 import org.flowable.common.engine.impl.interceptor.CommandContext;
@@ -420,8 +421,12 @@ public class CallActivityAdvancedTest extends PluggableFlowableTestCase {
         assertEquals(authenticatedUser, subProcess.getStartUserId());
         List<IdentityLink> subProcessIdentityLinks = runtimeService.getIdentityLinksForProcessInstance(subProcess.getId());
         assertEquals(1, subProcessIdentityLinks.size());
-        assertEquals(IdentityLinkType.STARTER, subProcessIdentityLinks.get(0).getType());
-        assertEquals(authenticatedUser, subProcessIdentityLinks.get(0).getUserId());
+        IdentityLink identityLink = subProcessIdentityLinks.get(0);
+        assertEquals(IdentityLinkType.STARTER, identityLink.getType());
+        assertEquals(authenticatedUser, identityLink.getUserId());
+        assertEquals(ScopeTypes.BPMN, identityLink.getScopeType());
+        assertEquals(subProcess.getId(), identityLink.getScopeId());
+        assertEquals(subProcess.getProcessDefinitionId(), identityLink.getScopeDefinitionId());
     }
     
     @Test

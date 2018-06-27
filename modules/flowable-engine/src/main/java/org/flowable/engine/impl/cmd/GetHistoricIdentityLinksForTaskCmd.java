@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.flowable.common.engine.api.FlowableIllegalArgumentException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.interceptor.Command;
 import org.flowable.common.engine.impl.interceptor.CommandContext;
 import org.flowable.engine.impl.util.CommandContextUtil;
@@ -81,6 +82,8 @@ public class GetHistoricIdentityLinksForTaskCmd implements Command<List<Historic
             identityLink.setUserId(task.getAssignee());
             identityLink.setTaskId(task.getId());
             identityLink.setType(IdentityLinkType.ASSIGNEE);
+            identityLink.setScopeType(ScopeTypes.TASK);
+            identityLink.setScopeId(task.getId());
             identityLinks.add(identityLink);
         }
 
@@ -89,6 +92,8 @@ public class GetHistoricIdentityLinksForTaskCmd implements Command<List<Historic
             identityLink.setTaskId(task.getId());
             identityLink.setUserId(task.getOwner());
             identityLink.setType(IdentityLinkType.OWNER);
+            identityLink.setScopeType(ScopeTypes.TASK);
+            identityLink.setScopeId(task.getId());
             identityLinks.add(identityLink);
         }
 

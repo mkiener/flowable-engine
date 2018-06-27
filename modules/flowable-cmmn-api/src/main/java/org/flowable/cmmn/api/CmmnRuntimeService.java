@@ -29,9 +29,18 @@ import org.flowable.identitylink.api.IdentityLink;
  * @author Joram Barrez
  */
 public interface CmmnRuntimeService {
-
+    /**
+     * Create a {@link CaseInstanceBuilder}, that allows to set various options for starting a case instance like the
+     * {#link {@link CaseInstanceBuilder#caseDefinitionKey(String)}}.
+     *
+     * @return a case instance builder with a fluent API to configure the new case instance
+     */
     CaseInstanceBuilder createCaseInstanceBuilder();
-    
+
+    /**
+     * Triggers the specified plan item instance
+     * @param planItemInstanceId
+     */
     void triggerPlanItemInstance(String planItemInstanceId);
     
     void enablePlanItemInstance(String planItemInstanceId);

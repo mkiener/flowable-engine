@@ -12,6 +12,15 @@
  */
 package org.flowable.cmmn.test.task;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.Collections;
+
 import org.flowable.cmmn.api.history.HistoricCaseInstance;
 import org.flowable.cmmn.api.runtime.CaseInstance;
 import org.flowable.cmmn.api.runtime.PlanItemInstance;
@@ -20,25 +29,11 @@ import org.flowable.cmmn.engine.test.FlowableCmmnTestCase;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.history.HistoryLevel;
-import org.flowable.identitylink.api.IdentityLinkType;
-import org.flowable.identitylink.service.impl.persistence.entity.IdentityLinkEntityImpl;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toSet;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * @author Joram Barrez
@@ -230,19 +225,4 @@ public class CmmnTaskServiceTest extends FlowableCmmnTestCase {
             cmmnHistoryService.deleteHistoricTaskInstance(task.getId());
         }
     }
-
-    private static Set<IdentityLinkEntityImpl> getDefaultIdentityLinks() {
-        IdentityLinkEntityImpl identityLinkEntityCandidateUser = new IdentityLinkEntityImpl();
-        identityLinkEntityCandidateUser.setUserId("testUserFromBuilder");
-        identityLinkEntityCandidateUser.setType(IdentityLinkType.CANDIDATE);
-        IdentityLinkEntityImpl identityLinkEntityCandidateGroup = new IdentityLinkEntityImpl();
-        identityLinkEntityCandidateGroup.setGroupId("testGroupFromBuilder");
-        identityLinkEntityCandidateGroup.setType(IdentityLinkType.CANDIDATE);
-
-        return Stream.of(
-                identityLinkEntityCandidateUser,
-                identityLinkEntityCandidateGroup
-        ).collect(toSet());
-    }
-
 }

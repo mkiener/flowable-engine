@@ -19,10 +19,11 @@ import java.util.List;
 
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
 import org.flowable.common.engine.api.delegate.event.FlowableEventDispatcher;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.persistence.entity.data.DataManager;
+import org.flowable.identitylink.api.IdentityLinkType;
 import org.flowable.identitylink.service.IdentityLinkEventHandler;
 import org.flowable.identitylink.service.IdentityLinkServiceConfiguration;
-import org.flowable.identitylink.api.IdentityLinkType;
 import org.flowable.identitylink.service.event.impl.FlowableIdentityLinkEventBuilder;
 import org.flowable.identitylink.service.impl.persistence.entity.data.IdentityLinkDataManager;
 
@@ -116,12 +117,16 @@ public class IdentityLinkEntityManagerImpl extends AbstractEntityManager<Identit
     }
     
     @Override
-    public IdentityLinkEntity addProcessInstanceIdentityLink(String processInstanceId, String userId, String groupId, String type) {
+    public IdentityLinkEntity addProcessInstanceIdentityLink(String processInstanceId, String processDefinitionId, String userId, String groupId, String type) {
         IdentityLinkEntity identityLinkEntity = identityLinkDataManager.create();
         identityLinkEntity.setProcessInstanceId(processInstanceId);
+        identityLinkEntity.setProcessDefId(processDefinitionId);
         identityLinkEntity.setUserId(userId);
         identityLinkEntity.setGroupId(groupId);
         identityLinkEntity.setType(type);
+        identityLinkEntity.setScopeId(processInstanceId);
+        identityLinkEntity.setScopeType(ScopeTypes.BPMN);
+        identityLinkEntity.setScopeDefinitionId(processDefinitionId);
         insert(identityLinkEntity);
         return identityLinkEntity;
     }
@@ -135,6 +140,23 @@ public class IdentityLinkEntityManagerImpl extends AbstractEntityManager<Identit
         identityLinkEntity.setUserId(userId);
         identityLinkEntity.setGroupId(groupId);
         identityLinkEntity.setType(type);
+
+        // duplicate some fields for backwards compatibility
+        switch (scopeType) {
+            case ScopeTypes.TASK:
+                identityLinkEntity.setTaskId(scopeId);
+                break;
+
+            case ScopeTypes.BPMN:
+                identityLinkEntity.setProcessInstanceId(scopeId);
+                identityLinkEntity.setProcessDefId(scopeDefinitionId);
+                break;
+
+            case ScopeTypes.BPMN_DEFINITION:
+                identityLinkEntity.setProcessDefId(scopeDefinitionId);
+                break;
+        }
+
         insert(identityLinkEntity);
         return identityLinkEntity;
     }
@@ -146,6 +168,8 @@ public class IdentityLinkEntityManagerImpl extends AbstractEntityManager<Identit
         identityLinkEntity.setUserId(userId);
         identityLinkEntity.setGroupId(groupId);
         identityLinkEntity.setType(type);
+        identityLinkEntity.setScopeId(taskId);
+        identityLinkEntity.setScopeType(ScopeTypes.TASK);
         insert(identityLinkEntity);
         
         return identityLinkEntity;
@@ -158,6 +182,8 @@ public class IdentityLinkEntityManagerImpl extends AbstractEntityManager<Identit
         identityLinkEntity.setUserId(userId);
         identityLinkEntity.setGroupId(groupId);
         identityLinkEntity.setType(IdentityLinkType.CANDIDATE);
+        identityLinkEntity.setScopeDefinitionId(processDefinitionId);
+        identityLinkEntity.setScopeType(ScopeTypes.BPMN_DEFINITION);
         insert(identityLinkEntity);
         return identityLinkEntity;
     }
@@ -171,12 +197,18 @@ public class IdentityLinkEntityManagerImpl extends AbstractEntityManager<Identit
         identityLinkEntity.setGroupId(groupId);
         identityLinkEntity.setType(IdentityLinkType.CANDIDATE);
         insert(identityLinkEntity);
+
+        // duplicate the process definition id for backwards compatibility
+        if (ScopeTypes.BPMN_DEFINITION.equals(scopeType)) {
+            identityLinkEntity.setProcessDefId(scopeDefinitionId);
+        }
+
         return identityLinkEntity;
     }
 
     @Override
     public IdentityLinkEntity addCandidateUser(String taskId, String userId) {
-        return addTaskIdentityLink(taskId, userId, null, IdentityLinkType.CANDIDATE);
+        return addScopeIdentityLink(null, taskId, ScopeTypes.TASK, userId, null, IdentityLinkType.CANDIDATE);
     }
 
     @Override
@@ -191,7 +223,7 @@ public class IdentityLinkEntityManagerImpl extends AbstractEntityManager<Identit
 
     @Override
     public IdentityLinkEntity addCandidateGroup(String taskId, String groupId) {
-        return addTaskIdentityLink(taskId, null, groupId, IdentityLinkType.CANDIDATE);
+        return addScopeIdentityLink(null, taskId, ScopeTypes.TASK, null, groupId, IdentityLinkType.CANDIDATE);
     }
 
     @Override

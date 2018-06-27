@@ -94,6 +94,12 @@ public interface HistoryJsonConstants {
     
     String TASK_ID = "taskId";
 
+    String FIELD_SCOPE_ID = "scopeId";
+
+    String FIELD_SCOPE_DEFINITION_ID = "scopeDefinitionId";
+
+    String FIELD_SCOPE_TYPE = "scopeType";
+
     String BUSINESS_KEY = "businessKey";
 
     String PROCESS_DEFINITION_ID = "processDefinitionId";

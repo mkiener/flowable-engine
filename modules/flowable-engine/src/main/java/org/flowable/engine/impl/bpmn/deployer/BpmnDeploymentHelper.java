@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.Process;
 import org.flowable.common.engine.api.FlowableException;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.context.Context;
 import org.flowable.common.engine.impl.interceptor.CommandContext;
 import org.flowable.engine.ProcessEngineConfiguration;
@@ -200,6 +201,8 @@ public class BpmnDeploymentHelper {
                 String expression = iterator.next();
                 IdentityLinkEntity identityLink = identityLinkService.createIdentityLink();
                 identityLink.setProcessDefId(processDefinition.getId());
+                identityLink.setScopeDefinitionId(processDefinition.getId());
+                identityLink.setScopeType(ScopeTypes.BPMN_DEFINITION);
                 if (expressionType == ExpressionType.USER) {
                     identityLink.setUserId(expression);
                 } else if (expressionType == ExpressionType.GROUP) {
