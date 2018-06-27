@@ -1567,7 +1567,7 @@ public class TaskQueryImpl extends AbstractVariableQueryImpl<TaskQuery, Task> im
     public List<Task> executeList(CommandContext commandContext) {
         ensureVariablesInitialized();
         checkQueryOk();
-        List<Task> tasks = null;
+        List<Task> tasks;
         if (includeTaskLocalVariables || includeProcessVariables || includeIdentityLinks) {
             tasks = CommandContextUtil.getTaskEntityManager(commandContext).findTasksWithRelatedEntitiesByQueryCriteria(this);
         } else {

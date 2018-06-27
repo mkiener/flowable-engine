@@ -2468,6 +2468,10 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
         return this;
     }
 
+    public IdentityLinkServiceConfiguration getIdentityLinkServiceConfiguration() {
+        return identityLinkServiceConfiguration;
+    }
+
     @Override
     public ProcessEngineConfigurationImpl setSessionFactories(Map<Class<?>, SessionFactory> sessionFactories) {
         this.sessionFactories = sessionFactories;

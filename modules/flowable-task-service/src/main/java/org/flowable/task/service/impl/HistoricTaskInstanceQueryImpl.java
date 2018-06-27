@@ -146,7 +146,7 @@ public class HistoricTaskInstanceQueryImpl extends AbstractVariableQueryImpl<His
     public List<HistoricTaskInstance> executeList(CommandContext commandContext) {
         ensureVariablesInitialized();
         checkQueryOk();
-        List<HistoricTaskInstance> tasks = null;
+        List<HistoricTaskInstance> tasks;
         if (includeTaskLocalVariables || includeProcessVariables || includeIdentityLinks) {
             tasks = CommandContextUtil.getHistoricTaskInstanceEntityManager(commandContext).findHistoricTaskInstancesAndRelatedEntitiesByQueryCriteria(this);
         } else {

@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
 import org.flowable.common.engine.api.delegate.event.FlowableEventDispatcher;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.history.HistoryLevel;
 import org.flowable.engine.delegate.event.impl.FlowableEventBuilder;
 import org.flowable.engine.history.HistoricActivityInstance;
@@ -416,6 +417,9 @@ public class DefaultHistoryManager extends AbstractHistoryManager {
             historicIdentityLinkEntity.setTaskId(identityLink.getTaskId());
             historicIdentityLinkEntity.setType(identityLink.getType());
             historicIdentityLinkEntity.setUserId(identityLink.getUserId());
+            historicIdentityLinkEntity.setScopeType(identityLink.getScopeType());
+            historicIdentityLinkEntity.setScopeId(identityLink.getScopeId());
+            historicIdentityLinkEntity.setScopeType(identityLink.getScopeType());
             historicIdentityLinkService.insertHistoricIdentityLink(historicIdentityLinkEntity, false);
         }
     }

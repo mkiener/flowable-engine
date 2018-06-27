@@ -15,6 +15,7 @@ package org.flowable.engine.impl.history.async.json.transformer;
 import static org.flowable.job.service.impl.history.async.util.AsyncHistoryJsonUtil.getDateFromJson;
 import static org.flowable.job.service.impl.history.async.util.AsyncHistoryJsonUtil.getStringFromJson;
 
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.interceptor.CommandContext;
 import org.flowable.engine.impl.history.async.HistoryJsonConstants;
 import org.flowable.engine.impl.util.CommandContextUtil;
@@ -39,6 +40,8 @@ public class TaskOwnerChangedHistoryJsonTransformer extends AbstractNeedsTaskHis
         
         HistoricIdentityLinkService historicIdentityLinkService = CommandContextUtil.getHistoricIdentityLinkService();
         HistoricIdentityLinkEntity historicIdentityLinkEntity = historicIdentityLinkService.createHistoricIdentityLink();
+        historicIdentityLinkEntity.setScopeType(ScopeTypes.TASK);
+        historicIdentityLinkEntity.setScopeId(taskId);
         historicIdentityLinkEntity.setTaskId(taskId);
         historicIdentityLinkEntity.setType(IdentityLinkType.OWNER);
         historicIdentityLinkEntity.setUserId(owner);

@@ -15,9 +15,11 @@ package org.flowable.engine.test.api.runtime;
 
 import java.util.List;
 
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.history.HistoryLevel;
 import org.flowable.engine.impl.test.HistoryTestHelper;
 import org.flowable.engine.impl.test.PluggableFlowableTestCase;
+import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Event;
 import org.flowable.engine.test.Deployment;
 import org.flowable.identitylink.api.IdentityLink;
@@ -34,7 +36,8 @@ public class ProcessInstanceIdentityLinksTest extends PluggableFlowableTestCase 
     public void testParticipantUserLink() {
         runtimeService.startProcessInstanceByKey("IdentityLinksProcess");
 
-        String processInstanceId = runtimeService.createProcessInstanceQuery().singleResult().getId();
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().singleResult();
+        String processInstanceId = processInstance.getProcessInstanceId();
 
         runtimeService.addParticipantUser(processInstanceId, "kermit");
 
@@ -45,6 +48,10 @@ public class ProcessInstanceIdentityLinksTest extends PluggableFlowableTestCase 
         assertEquals("kermit", identityLink.getUserId());
         assertEquals(IdentityLinkType.PARTICIPANT, identityLink.getType());
         assertEquals(processInstanceId, identityLink.getProcessInstanceId());
+        assertEquals(processInstanceId, identityLink.getScopeId());
+        assertEquals(ScopeTypes.BPMN, identityLink.getScopeType());
+        assertEquals(processInstance.getProcessDefinitionId(), identityLink.getScopeDefinitionId());
+        assertEquals(processInstance.getProcessDefinitionId(), identityLink.getProcessDefinitionId());
 
         assertEquals(1, identityLinks.size());
 
@@ -57,7 +64,8 @@ public class ProcessInstanceIdentityLinksTest extends PluggableFlowableTestCase 
     public void testCandidateGroupLink() {
         runtimeService.startProcessInstanceByKey("IdentityLinksProcess");
 
-        String processInstanceId = runtimeService.createProcessInstanceQuery().singleResult().getId();
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().singleResult();
+        String processInstanceId = processInstance.getId();
 
         runtimeService.addParticipantGroup(processInstanceId, "muppets");
 
@@ -68,6 +76,10 @@ public class ProcessInstanceIdentityLinksTest extends PluggableFlowableTestCase 
         assertNull("kermit", identityLink.getUserId());
         assertEquals(IdentityLinkType.PARTICIPANT, identityLink.getType());
         assertEquals(processInstanceId, identityLink.getProcessInstanceId());
+        assertEquals(processInstanceId, identityLink.getScopeId());
+        assertEquals(ScopeTypes.BPMN, identityLink.getScopeType());
+        assertEquals(processInstance.getProcessDefinitionId(), identityLink.getScopeDefinitionId());
+        assertEquals(processInstance.getProcessDefinitionId(), identityLink.getProcessDefinitionId());
 
         assertEquals(1, identityLinks.size());
 
@@ -111,7 +123,8 @@ public class ProcessInstanceIdentityLinksTest extends PluggableFlowableTestCase 
     public void testCustomTypeUserLink() {
         runtimeService.startProcessInstanceByKey("IdentityLinksProcess");
 
-        String processInstanceId = runtimeService.createProcessInstanceQuery().singleResult().getId();
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().singleResult();
+        String processInstanceId = processInstance.getId();
 
         runtimeService.addUserIdentityLink(processInstanceId, "kermit", "interestee");
 
@@ -122,6 +135,10 @@ public class ProcessInstanceIdentityLinksTest extends PluggableFlowableTestCase 
         assertEquals("kermit", identityLink.getUserId());
         assertEquals("interestee", identityLink.getType());
         assertEquals(processInstanceId, identityLink.getProcessInstanceId());
+        assertEquals(processInstanceId, identityLink.getScopeId());
+        assertEquals(ScopeTypes.BPMN, identityLink.getScopeType());
+        assertEquals(processInstance.getProcessDefinitionId(), identityLink.getScopeDefinitionId());
+        assertEquals(processInstance.getProcessDefinitionId(), identityLink.getProcessDefinitionId());
 
         assertEquals(1, identityLinks.size());
 
@@ -134,7 +151,8 @@ public class ProcessInstanceIdentityLinksTest extends PluggableFlowableTestCase 
     public void testCustomLinkGroupLink() {
         runtimeService.startProcessInstanceByKey("IdentityLinksProcess");
 
-        String processInstanceId = runtimeService.createProcessInstanceQuery().singleResult().getId();
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().singleResult();
+        String processInstanceId = processInstance.getId();
 
         runtimeService.addGroupIdentityLink(processInstanceId, "muppets", "playing");
 
@@ -145,6 +163,10 @@ public class ProcessInstanceIdentityLinksTest extends PluggableFlowableTestCase 
         assertNull("kermit", identityLink.getUserId());
         assertEquals("playing", identityLink.getType());
         assertEquals(processInstanceId, identityLink.getProcessInstanceId());
+        assertEquals(processInstanceId, identityLink.getScopeId());
+        assertEquals(ScopeTypes.BPMN, identityLink.getScopeType());
+        assertEquals(processInstance.getProcessDefinitionId(), identityLink.getScopeDefinitionId());
+        assertEquals(processInstance.getProcessDefinitionId(), identityLink.getProcessDefinitionId());
 
         assertEquals(1, identityLinks.size());
 

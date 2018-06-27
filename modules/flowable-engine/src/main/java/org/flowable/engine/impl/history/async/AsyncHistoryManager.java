@@ -531,6 +531,9 @@ public class AsyncHistoryManager extends AbstractHistoryManager {
             putIfNotNull(data, HistoryJsonConstants.TASK_ID, identityLink.getTaskId());
             putIfNotNull(data, HistoryJsonConstants.IDENTITY_LINK_TYPE, identityLink.getType());
             putIfNotNull(data, HistoryJsonConstants.USER_ID, identityLink.getUserId());
+            putIfNotNull(data, HistoryJsonConstants.FIELD_SCOPE_TYPE, identityLink.getScopeType());
+            putIfNotNull(data, HistoryJsonConstants.FIELD_SCOPE_ID, identityLink.getScopeId());
+            putIfNotNull(data, HistoryJsonConstants.FIELD_SCOPE_DEFINITION_ID, identityLink.getScopeDefinitionId());
             getAsyncHistorySession().addHistoricData(HistoryJsonConstants.TYPE_IDENTITY_LINK_CREATED, data);
         }
     }

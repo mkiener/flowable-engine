@@ -22,6 +22,7 @@ import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.db.BulkDeleteable;
 import org.activiti.engine.impl.db.PersistentObject;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.identitylink.api.IdentityLink;
 
 /**
@@ -202,6 +203,7 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, BulkDelet
     public void setProcessInstance(ExecutionEntity processInstance) {
         this.processInstance = processInstance;
         this.processInstanceId = processInstance.getId();
+        this.processDefId = processInstance.getProcessDefinitionId();
     }
 
     public ProcessDefinitionEntity getProcessDef() {
@@ -226,17 +228,36 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, BulkDelet
     
     @Override
     public String getScopeId() {
+        String scopeType = getScopeType();
+        if (ScopeTypes.TASK.equals(scopeType)) {
+            return taskId;
+        }
+        if (ScopeTypes.BPMN.equals(scopeType)) {
+            return processInstanceId;
+        }
+        if (ScopeTypes.BPMN_DEFINITION.equals(scopeType)) {
+            return processDefId;
+        }
         return null;
     }
 
     @Override
     public String getScopeType() {
+        if (taskId != null) {
+            return ScopeTypes.TASK;
+        }
+        if (processInstanceId != null) {
+            return ScopeTypes.BPMN;
+        }
+        if (processDefId != null) {
+            return ScopeTypes.BPMN_DEFINITION;
+        }
         return null;
     }
 
     @Override
     public String getScopeDefinitionId() {
-        return null;
+        return processDefId;
     }
 
     @Override

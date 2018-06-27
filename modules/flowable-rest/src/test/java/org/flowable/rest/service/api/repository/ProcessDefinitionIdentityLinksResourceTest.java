@@ -1,5 +1,9 @@
 package org.flowable.rest.service.api.repository;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.apache.http.HttpStatus;
@@ -8,6 +12,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.test.Deployment;
 import org.flowable.identitylink.api.IdentityLink;
@@ -17,8 +22,6 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import static org.junit.Assert.*;
 
 /**
  * Test for all REST-operations related to single a Process Definition resource.
@@ -100,8 +103,11 @@ public class ProcessDefinitionIdentityLinksResourceTest extends BaseSpringRestTe
 
         List<IdentityLink> createdLinks = repositoryService.getIdentityLinksForProcessDefinition(processDefinition.getId());
         assertEquals(1, createdLinks.size());
-        assertEquals("kermit", createdLinks.get(0).getUserId());
-        assertEquals("candidate", createdLinks.get(0).getType());
+        IdentityLink identityLink = createdLinks.get(0);
+        assertEquals("kermit", identityLink.getUserId());
+        assertEquals("candidate", identityLink.getType());
+        assertEquals(ScopeTypes.BPMN_DEFINITION, identityLink.getScopeType());
+        assertEquals(processDefinition.getId(), identityLink.getScopeDefinitionId());
         repositoryService.deleteCandidateStarterUser(processDefinition.getId(), "kermit");
 
         // Create group candidate
@@ -120,8 +126,11 @@ public class ProcessDefinitionIdentityLinksResourceTest extends BaseSpringRestTe
 
         createdLinks = repositoryService.getIdentityLinksForProcessDefinition(processDefinition.getId());
         assertEquals(1, createdLinks.size());
-        assertEquals("admin", createdLinks.get(0).getGroupId());
-        assertEquals("candidate", createdLinks.get(0).getType());
+        identityLink = createdLinks.get(0);
+        assertEquals("admin", identityLink.getGroupId());
+        assertEquals("candidate", identityLink.getType());
+        assertEquals(ScopeTypes.BPMN_DEFINITION, identityLink.getScopeType());
+        assertEquals(processDefinition.getId(), identityLink.getScopeDefinitionId());
         repositoryService.deleteCandidateStarterUser(processDefinition.getId(), "admin");
     }
 

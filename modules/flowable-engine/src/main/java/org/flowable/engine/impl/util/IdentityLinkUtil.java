@@ -27,7 +27,7 @@ public class IdentityLinkUtil {
     
     public static IdentityLinkEntity createProcessInstanceIdentityLink(ExecutionEntity processInstanceExecution, String userId, String groupId, String type) {
         IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createProcessInstanceIdentityLink(
-                        processInstanceExecution.getId(), userId, groupId, type);
+                        processInstanceExecution.getId(), processInstanceExecution.getProcessDefinitionId(), userId, groupId, type);
         
         CommandContextUtil.getHistoryManager().recordIdentityLinkCreated(identityLinkEntity);
         processInstanceExecution.getIdentityLinks().add(identityLinkEntity);

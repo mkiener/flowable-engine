@@ -13,10 +13,50 @@
 package org.flowable.common.engine.api.scope;
 
 /**
+ * A list of predefined identity link scope types used in identity or variable links.
+ *
  * @author Joram Barrez
+ * @author Micha Kiener
  */
 public interface ScopeTypes {
 
+    /** The scope type for linking to an App, containing any type of models. */
     String APP = "app";
+
+    /** The scope type for linking to a case instance (CMMN). */
     String CMMN = "cmmn";
+
+    /** The scope type for linking to a process instance (BPMN). */
+    String BPMN = "bpmn";
+
+    /** The scope type for linking to a task instance (might be an adhoc task or created as part of a case or process model). */
+    String TASK = "task";
+
+    /** The scope type for linking to a rule instance (DMN). */
+    String DMN = "dmn";
+
+    /** The scope type for linking to a document / content instance. */
+    String DOCUMENT = "document";
+
+    /** The scope type for linking to a conversation instance. */
+    String CONVERSATION = "conversation";
+
+
+    /** The scope type for linking to a process instance (BPMN). */
+    String BPMN_DEFINITION = "bpmnDefinition";
+
+    /** The scope type for linking to a case instance (CMMN). */
+    String CMMN_DEFINITION = "cmmnDefinition";
+
+    /** The scope type for linking to a task instance (might be an adhoc task or created as part of a case or process model). */
+    String TASK_DEFINITION = "taskDefinition";
+
+    /** The scope type for linking to a rule instance (DMN). */
+    String DMN_DEFINITION = "dmnDefinition";
+
+    /** The scope type for linking to a document / content instance. */
+    String DOCUMENT_DEFINITION = "documentDefinition";
+
+    /** The scope type for linking to a conversation instance. */
+    String CONVERSATION_DEFINITION = "conversationDefinition";
 }

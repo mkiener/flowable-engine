@@ -109,9 +109,7 @@ public class DefaultCmmnHistoryManager implements CmmnHistoryManager {
             historicIdentityLinkEntity.setGroupId(identityLink.getGroupId());
             historicIdentityLinkEntity.setScopeDefinitionId(identityLink.getScopeDefinitionId());
             historicIdentityLinkEntity.setScopeId(identityLink.getScopeId());
-            if (identityLink.getScopeId() != null) {
-                historicIdentityLinkEntity.setScopeType(ScopeTypes.CMMN);
-            }
+            historicIdentityLinkEntity.setScopeType(ScopeTypes.CMMN);
             historicIdentityLinkEntity.setTaskId(identityLink.getTaskId());
             historicIdentityLinkEntity.setType(identityLink.getType());
             historicIdentityLinkEntity.setUserId(identityLink.getUserId());

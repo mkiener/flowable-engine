@@ -15,6 +15,7 @@ package org.flowable.engine.impl.cmd;
 import java.io.Serializable;
 import java.util.List;
 
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.interceptor.Command;
 import org.flowable.common.engine.impl.interceptor.CommandContext;
 import org.flowable.engine.impl.util.CommandContextUtil;
@@ -56,6 +57,8 @@ public class GetIdentityLinksForTaskCmd implements Command<List<IdentityLink>>, 
             identityLink.setUserId(task.getAssignee());
             identityLink.setType(IdentityLinkType.ASSIGNEE);
             identityLink.setTaskId(task.getId());
+            identityLink.setScopeId(task.getId());
+            identityLink.setScopeType(ScopeTypes.TASK);
             identityLinks.add(identityLink);
         }
         if (task.getOwner() != null) {
@@ -63,6 +66,8 @@ public class GetIdentityLinksForTaskCmd implements Command<List<IdentityLink>>, 
             identityLink.setUserId(task.getOwner());
             identityLink.setTaskId(task.getId());
             identityLink.setType(IdentityLinkType.OWNER);
+            identityLink.setScopeId(task.getId());
+            identityLink.setScopeType(ScopeTypes.TASK);
             identityLinks.add(identityLink);
         }
 

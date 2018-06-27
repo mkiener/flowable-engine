@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.FlowableIllegalArgumentException;
+import org.flowable.common.engine.api.scope.ScopeTypes;
 import org.flowable.common.engine.impl.history.HistoryLevel;
 import org.flowable.engine.impl.test.HistoryTestHelper;
 import org.flowable.engine.impl.test.PluggableFlowableTestCase;
@@ -2937,6 +2938,9 @@ public class TaskQueryTest extends PluggableFlowableTestCase {
         assertEquals("group1", identityLink.getGroupId());
         assertNull(identityLink.getUserId());
         assertEquals(task.getId(), identityLink.getTaskId());
+        assertEquals(ScopeTypes.TASK, identityLink.getScopeType());
+        assertNull(identityLink.getScopeDefinitionId());
+        assertEquals(task.getId(), identityLink.getScopeId());
 
         assertNotNull(task.getProcessVariables());
         byte[] bytes = (byte[]) task.getProcessVariables().get("binaryVariable");
