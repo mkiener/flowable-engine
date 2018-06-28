@@ -58,6 +58,26 @@
       </foreach>
     SELECT * FROM dual
   </insert>
+
+
+  <!-- IDENTITY LINK UPDATE -->
+
+  <update id="updateIdentityLink" parameterType="org.flowable.identitylink.service.impl.persistence.entity.IdentityLinkEntityImpl">
+    update ${prefix}ACT_RU_IDENTITYLINK set
+      REV_ = #{revisionNext ,jdbcType=INTEGER},
+      TYPE_ = #{type, jdbcType=VARCHAR},
+      USER_ID_ = #{userId, jdbcType=VARCHAR},
+      GROUP_ID_ = #{groupId, jdbcType=VARCHAR},
+      TASK_ID_ = #{taskId, jdbcType=VARCHAR},
+      PROC_INST_ID_ = #{processInstanceId, jdbcType=VARCHAR},
+      PROC_DEF_ID_ = #{processDefId, jdbcType=VARCHAR},
+      SCOPE_ID_ = #{scopeId, jdbcType=VARCHAR},
+      SCOPE_TYPE_ = #{scopeType, jdbcType=VARCHAR},
+      SCOPE_DEFINITION_ID_ = #{scopeDefinitionId, jdbcType=VARCHAR}
+    where ID_ = #{id}
+      and REV_ = #{revision}
+  </update>
+
   
   <!-- IDENTITY LINK DELETE -->
   
