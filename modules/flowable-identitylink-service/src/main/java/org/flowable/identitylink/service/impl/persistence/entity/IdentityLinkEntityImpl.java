@@ -18,12 +18,12 @@ import java.util.Map;
 
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.scope.ScopeTypes;
-import org.flowable.common.engine.impl.persistence.entity.AbstractEntityNoRevision;
+import org.flowable.common.engine.impl.persistence.entity.AbstractEntity;
 
 /**
  * @author Joram Barrez
  */
-public class IdentityLinkEntityImpl extends AbstractEntityNoRevision implements IdentityLinkEntity, Serializable {
+public class IdentityLinkEntityImpl extends AbstractEntity implements IdentityLinkEntity, Serializable {
 
     private static final long serialVersionUID = 1L;
 
