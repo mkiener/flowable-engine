@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -122,14 +122,6 @@ public interface CaseInstanceBuilder {
     CaseInstanceBuilder outcome(String outcome);
 
     /**
-     * Starts the new case instance with the provided information within this builder. At least the definition id or key
-     * must be provided in order to be able to start a new case instance.
-     *
-     * @return the newly created case instance
-     */
-    CaseInstance start();
-
-    /**
      * Set callback type of the newly created case instance.
      * @param callbackType type of the callback
      * @return case instance builder which creates case instance with defined callback type
@@ -144,6 +136,21 @@ public interface CaseInstanceBuilder {
      */
     CaseInstanceBuilder callbackId(String callbackId);
 
+    /**
+     * Set parent case instanceId of the newly create case instance
+     *
+     * @param parentCaseInstanceId parent case instance identifier
+     * @return modified case instance builder which creates case instance with the reference to parent
+     */
+    CaseInstanceBuilder parentId(String parentCaseInstanceId);
+
+    /**
+     * Starts the new case instance with the provided information within this builder. At least the definition id or key
+     * must be provided in order to be able to start a new case instance.
+     *
+     * @return the newly created case instance
+     */
+    CaseInstance start();
 
     /**
      * Starts a new case instance with form support where the provided variables and optional outcome is then validated
@@ -196,4 +203,7 @@ public interface CaseInstanceBuilder {
     String getCallbackType();
 
     String getCallbackId();
+
+    String getParentId();
+
 }
